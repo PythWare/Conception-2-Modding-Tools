@@ -1,7 +1,7 @@
 # Conception-II-Modding-Tools
-Conception II lightweight Python coded Modding Tools. The scripts are extremely lightwegiht in my opinion with few dependencies, the goal was lightweight GUI based modding tools to make modding easier for modders. The file size of mods made is not a concern, whether your mod becomes smaller or larger than the original game's files doesn't matter anymore since the Mod Manager makes sure the game supports the change in file size. Essentially, mod without worry about file size because the Mod Manager will make sure your mod is applied regardless of the size of the file.
+Conception II lightweight Python coded Modding Tools. The scripts are extremely lightweight in my opinion with few dependencies, the goal was lightweight GUI based modding tools to make modding easier for modders. The file size of mods made is not a concern, whether your mod becomes smaller or larger than the original game's files doesn't matter anymore since the Mod Manager makes sure the game supports the change in file size. Essentially, mod without worry about file size because the Mod Manager will make sure your mod is applied regardless of the size of the file.
 
-Requirements: The scripts must be in the same directory as Conception 2's game directory, you must have python 3 installed, and must not alter the files the Mod Creator makes unless you know what you're doing since the custom formats I designed are meant to be used by the Mod Manager and Mod Creator.
+Requirements: The scripts must be in the same directory as Conception 2's game directory, you must have python 3 installed, and must not alter the files the Mod Creator and Mod Manager makes unless you know what you're doing since the custom formats I designed are meant to be used by the Mod Manager and Mod Creator.
 
 1. Unpacker(Console based): The Unpacker will first backup the original CFSI container files into a "Backups_Folder", unpack files from the CFSI container files into the Unpacked_Files folder, and decompress any files that use compression. It will also add metadata at the end of every file unpacked for the mod creator and mod manager to use later. It's essential you don't modify the Tail metadata(the metadata written at the end of every file by the unpacker) so that the Mod Creator and Mod Manager work without issue.
 
@@ -19,3 +19,7 @@ Lust Dungeon Floor 1 Mod: This example Mod adds 5 more sub rooms and some more e
 With mod enabled: ![ex1](https://github.com/user-attachments/assets/054e274f-7688-40bb-874a-8d3c51426994)
 
 With mod disabled: ![ex2](https://github.com/user-attachments/assets/27724571-3f57-483a-9bb8-8f9140ced4c5)
+
+Things to keep in mind: This is the initial release of the Python scripts, there are some features not currently implmeneted since I want to get some testing by others done before going further. One example is for the Mod Creator, I haven't added a way to update an existing mod so if you make a mod with the current version and you want to update it you will have to create a new file for it in the Mod Creator script. That's not a big deal, all you need to do is create a new file within the Mod Creator.
+
+Future Plans: I would like to update the Mod Creator a little further, when I have some spare time I want to add a Mod Update button so that you don't have to create a new file within the Mod Creator script. I may build a GUI Translation tool so translators can translate the us.mo file more easily and may build a GUI item/parameter editor once the Item data is found. By item data I mean stuff like cost, effect, etc.
