@@ -202,7 +202,6 @@ class Conception2:
 
         # File Tail Metadata, it adds some metadata at the end of file for the mod manager and mod creator to use later
         with open(file_path, "ab") as a1:
-            current_position = a1.tell() # used for set where the start of File Tail Metadata begins
             a1.write(len(container).to_bytes(1, "little")) # write the length of the container file's name
             a1.write(container.encode()) # write the encoded container filename, mod manager uses this for mod applying
             a1.write(offset.to_bytes(4, "little")) # offset to the file's metadata section within the container file
