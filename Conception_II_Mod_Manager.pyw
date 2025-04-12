@@ -329,25 +329,22 @@ class ModManager():
                 self.mod_file.config(text=filename)
 
                 with open(self.file_path, "rb") as f1:
-                    # Step 1: Read the description
+                    # (Steps 1 - 3 remain unchanged)
                     description_len = int.from_bytes(f1.read(2), "little")
                     description = f1.read(description_len).decode()
-                    
-                    # Step 2: Read the container filename
                     container_name_len = int.from_bytes(f1.read(1), "little")
                     container_name = f1.read(container_name_len).decode()
                     self.container_to_mod = container_name
-                    
-                    # Step 3: read mod disabling metadata
                     file_metadata_offset = int.from_bytes(f1.read(4), "little")
-                    file_base_offset = f1.read(4) # this contains the original offset before math
-                    file_size = f1.read(4) # original file size
-                    comp_marker = f1.read(1) # compression marker
-                    
-                    # Step 4: check if the mod has already been enabled before
+                    file_base_offset = f1.read(4)  # original file offset
+                    file_size = f1.read(4)         # original file size
+                    comp_marker = f1.read(1)       # compression marker
+
+                    # Step 4: check if the mod has been applied before
                     self.check_if_applied(filename)
-                    
-                    # Step 5: disable the mod
+
+                    # Step 5: disable the mod by scanning the .MODS file
+                    mod_found = False
                     with open("Conception_II.MODS", "rb") as f:
                         while True:
                             mod_name_len_bytes = f.read(1)
@@ -363,7 +360,6 @@ class ModManager():
                             original_offset = f.read(4)
                             original_size = f.read(4)
 
-                            # Match by mod name
                             if mod_name == self.modname:
                                 with open(container_name, "r+b") as container_file:
                                     container_file.seek(metadata_offset)
@@ -374,16 +370,18 @@ class ModManager():
                                     text=f"Mod '{self.modname}' disabled and original file restored.",
                                     fg="blue"
                                 )
+                                mod_found = True
                                 break
-                            else:
-                                self.status_label.config(text="Mod not found in tracking file.", fg="red")
-                            
-                    # Step 6: call the .MODS file updater function
-                    self.update_mods(filename)
 
+                    if not mod_found:
+                        self.status_label.config(text="Mod not found in tracking file.", fg="red")
+
+                    # Step 6: Update the .MODS file (call the updater)
+                    self.update_mods(filename)
                     
         except Exception as e:
             self.status_label.config(text=f"Error: {str(e)}", fg="red")
+
 
 def runner():
     root = tk.Tk()
