@@ -92,8 +92,10 @@ class ModCreator():
 
                     # Go to metadata at the end of the original game's file for mod enabling and disabling for the mod manager
                     original.seek(selected_file_size - 4)
+                    current_position = original.tell()
                     tail_metadata = int.from_bytes(original.read(4), "little")
-                    original.seek(tail_metadata)
+                    original.seek(current_position - tail_metadata)
+                    tail_metadata_offset = original.tell()
                     
                     container_len = int.from_bytes(original.read(1), "little") # length of container file's name
                     container = original.read(container_len) # container the mod is to be applied to
@@ -151,8 +153,10 @@ class ModCreator():
                     f1.write(description_bytes)                      # Write description
 
                     original.seek(selected_file_size - 4)
+                    current_position = original.tell()
                     tail_metadata = int.from_bytes(original.read(4), "little")
-                    original.seek(tail_metadata)
+                    original.seek(current_position - tail_metadata)
+                    tail_metadata_offset = original.tell()
                     
                     container_len = int.from_bytes(original.read(1), "little") # length of container file's name
                     container = original.read(container_len) # container the mod is to be applied to
@@ -162,7 +166,7 @@ class ModCreator():
 
                     if compression_marker == 1:
                         all_data = original.read()
-                        data_to_comp = all_data[:tail_metadata]
+                        data_to_comp = all_data[:tail_metadata_offset]
                         compressed_data = self.compression(data_to_comp)
 
                         # Modify the OS byte within the GZIP header
@@ -181,7 +185,7 @@ class ModCreator():
                         f1.write(tail_data)
                         f1.write(compression_marker.to_bytes(1, "little"))
                         all_data = original.read()
-                        f1.write(all_data[:tail_metadata])
+                        f1.write(all_data[:tail_metadata_offset])
 
                 self.status_label.config(text=f"The Mod {new_mod} was created successfully!", fg="green")
         except Exception as e:

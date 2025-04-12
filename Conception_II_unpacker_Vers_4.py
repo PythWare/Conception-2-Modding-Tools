@@ -209,7 +209,9 @@ class Conception2:
             a1.write(initial_file_offset.to_bytes(4, "little")) # initial offset before calculating file data offset, used by mod manager to write the original offset for mod disabling
             a1.write(size.to_bytes(4, "little")) # size of the original file, used by mod manager to write the original size for mod disabling
             a1.write(comp_marker) # write marker saying if the file was originally compressed or not
-            a1.write(current_position.to_bytes(4, "little"))
+            # this will be used for the mod creator and mod manager, showing how large the tail metadata is
+            len_of_taildata = 1 + len(container) + 13
+            a1.write(len_of_taildata.to_bytes(4, "little"))
         print(file_path)
 
 if __name__ == "__main__":
